@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DaCapo.</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="DaCapo.">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png"> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+<body>
+
+    <div id="auth-screen" class="screen active">
+        <div class="auth-container">
+            <h1 class="app-title-auth">DaCapo.</h1>
+
+            <form id="login-form" class="auth-form">
+                <h2>Connexion</h2>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <p class="auth-switch">Pas encore de compte ? <a href="#" id="show-signup">S'inscrire</a></p>
+                <p id="auth-error-login" class="error-message"></p>
+            </form>
+
+            <form id="signup-form" class="auth-form" style="display: none;">
+                <h2>Inscription</h2>
+                 <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Mot de passe</label>
+                    <input type="password" id="signup-password" required>
+                 </div>
+                 <button type="submit" class="btn btn-primary">S'inscrire</button>
+                 <p class="auth-switch">Déjà un compte ? <a href="#" id="show-login">Se connecter</a></p>
+                 <p id="auth-error-signup" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-screen" class="screen">
+        <header class="app-header">
+            <h1 class="app-title">DaCapo.</h1>
+        </header>
+
+        <main id="main-content">
+            <div id="planification-view" class="app-view">
+                <h2>Planification</h2>
+                <button class="btn btn-add" id="add-plan-btn">+ Nouveau Plan</button>
+                <div id="plans-list"></div>
+            </div>
+            <div id="journal-view" class="app-view">
+                <h2>Journal</h2>
+                <button class="btn btn-add" id="add-journal-btn">+ Nouvelle Entrée</button>
+                 <div id="journal-list"></div>
+            </div>
+            <div id="repertoire-view" class="app-view">
+                <h2>Répertoire</h2>
+                <button class="btn btn-add" id="add-piece-btn">+ Nouvelle Pièce</button>
+                 <div id="repertoire-list"></div>
+            </div>
+            <div id="profil-view" class="app-view">
+                <h2>Profil</h2>
+                <p id="user-email-display"></p>
+                <button id="logout-button" class="btn btn-secondary">Déconnexion</button>
+            </div>
+        </main>
+
+        <nav id="bottom-nav">
+            <button class="nav-tab active" data-view="planification-view">Planifier</button>
+            <button class="nav-tab" data-view="journal-view">Journal</button>
+            <button class="nav-tab" data-view="repertoire-view">Répertoire</button>
+            <button class="nav-tab" data-view="profil-view">Profil</button>
+        </nav>
+
+        <div id="add-piece-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" data-modal-id="add-piece-modal">&times;</span>
+                <h3>Ajouter une Pièce</h3>
+                <form id="add-piece-form">
+                    <div class="form-group">
+                        <label for="piece-title">Titre</label>
+                        <input type="text" id="piece-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="piece-composer">Compositeur</label>
+                        <input type="text" id="piece-composer">
+                    </div>
+                    <div class="form-group">
+                        <label for="piece-status">Statut</label>
+                        <input type="text" id="piece-status" placeholder="Ex: En apprentissage">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <p id="add-piece-error" class="error-message"></p>
+                </form>
+            </div>
+        </div>
+        </div> <script src="auth.js"></script>
+    <script src="app_logic.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
