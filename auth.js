@@ -2,12 +2,24 @@
 const SUPABASE_URL = 'https://hunbfztfmqtfxrckrchc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1bmJmenRmbXF0ZnhyY2tyY2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMzg0NjQsImV4cCI6MjA1OTYxNDQ2NH0.PCLon6XtzPNlqLCXT4427gAXO5aJVrwiLYzZrxvS0DQ';
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// CORRECTION ICI:
+// 1. Récupérer la fonction 'createClient' de l'objet global 'supabase' (chargé via CDN)
+const { createClient } = supabase;
+// 2. Créer votre client en utilisant cette fonction
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Exposer le client Supabase pour les autres scripts
-window.supabase = supabase; // Rendre accessible globalement
+// Exposer le client Supabase correctement initialisé pour les autres scripts
+window.supabase = supabaseClient; // On expose le client créé sous le nom 'supabase' globalement
+
+// Le reste de votre code dans auth.js peut continuer à utiliser 'supabase' (via window.supabase implicitement)
+// ou vous pouvez remplacer les appels par 'supabaseClient' si vous préférez être explicite.
+// Le plus simple est de garder 'window.supabase = supabaseClient;' et de ne rien changer d'autre.
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ... le reste du code de auth.js ...
+    // Assurez-vous que les appels comme supabase.auth.signInWithPassword fonctionnent,
+    // car window.supabase est maintenant correctement défini.
+});
     // Éléments DOM Auth
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
