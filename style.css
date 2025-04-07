@@ -1,0 +1,376 @@
+/* Réinitialisation et Base */
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --primary-accent: #333333; /* Un gris foncé pour les accents */
+    --secondary-accent: #cccccc; /* Gris clair pour bordures/séparateurs */
+    --error-color: #d9534f; /* Rouge pour les erreurs */
+
+    --font-title: 'Montserrat', sans-serif;
+    --font-text: 'DM Sans', sans-serif;
+
+    --header-height: 60px;
+    --nav-height: 60px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font-text);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent; /* Empêche le flash bleu sur mobile */
+}
+
+/* Typographie */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    margin-bottom: 0.8em;
+    line-height: 1.2;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Conteneurs principaux */
+.screen {
+    display: none; /* Caché par défaut */
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Empêche le scroll global */
+    flex-direction: column; /* Pour app-screen */
+}
+.screen.active {
+    display: flex; /* Affiché quand actif */
+    opacity: 0; /* Pour animation */
+    animation: fadeIn 0.4s ease forwards; /* Animation d'apparition */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Styles Authentification */
+#auth-screen {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+.app-title-auth {
+    font-size: 2.5em;
+    margin-bottom: 1.5em;
+}
+.auth-form {
+    background-color: #f9f9f9; /* Léger fond pour distinguer */
+    padding: 25px;
+    border-radius: 8px;
+    text-align: left;
+    border: 1px solid var(--secondary-accent);
+    margin-top: 20px;
+}
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 1.5em;
+    font-weight: 600;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--secondary-accent);
+    border-radius: 4px;
+    font-family: var(--font-text);
+    font-size: 1em;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+}
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+.auth-switch {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+/* Styles Application Principale */
+#app-screen {
+    flex-direction: column;
+}
+
+.app-header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Ou 'flex-start' si vous préférez à gauche */
+    padding: 0 20px;
+    border-bottom: 1px solid var(--secondary-accent);
+    background-color: var(--background-color);
+    position: sticky; /* Ou fixed si nécessaire */
+    top: 0;
+    z-index: 10;
+}
+.app-title {
+    font-size: 1.5em;
+    margin: 0; /* Reset margin pour le titre header */
+}
+
+#main-content {
+    flex-grow: 1; /* Prend toute la place restante */
+    overflow-y: auto; /* Permet le scroll du contenu seulement */
+    padding: 20px;
+    position: relative; /* Pour positionner les vues */
+}
+
+/* Vues de l'application */
+.app-view {
+    display: none; /* Caché par défaut */
+    opacity: 0;
+    position: absolute; /* Permet de superposer et animer */
+    top: 20px; /* Correspond au padding de main-content */
+    left: 20px;
+    right: 20px;
+    bottom: 20px; /* Optionnel, dépend du contenu */
+    animation: slideIn 0.4s ease forwards;
+}
+.app-view.active {
+    display: block; /* Affiché quand actif */
+    position: relative; /* Rétablit le flux normal quand actif */
+    top: auto; left: auto; right: auto; bottom: auto;
+    opacity: 1; /* Assure la visibilité */
+}
+
+@keyframes slideIn { /* Animation simple, à améliorer */
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+/* Assurer que l'animation de sortie se fasse */
+.app-view.exiting {
+    animation: slideOut 0.4s ease forwards;
+}
+@keyframes slideOut {
+     from { opacity: 1; transform: translateX(0); }
+     to { opacity: 0; transform: translateX(-20px); }
+}
+
+
+.app-view h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Barre de Navigation Inférieure */
+#bottom-nav {
+    height: var(--nav-height);
+    display: flex;
+    border-top: 1px solid var(--secondary-accent);
+    background-color: var(--background-color);
+    position: sticky; /* Colle en bas */
+    bottom: 0;
+    z-index: 10;
+}
+.nav-tab {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    font-family: var(--font-title);
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--secondary-accent); /* Couleur inactive */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: 5px; /* Ajout de padding */
+    text-align: center; /* Assure centrage texte */
+}
+.nav-tab:hover {
+    background-color: #f8f8f8;
+}
+.nav-tab.active {
+    color: var(--primary-accent); /* Couleur active */
+    border-top: 2px solid var(--primary-accent); /* Indicateur actif */
+}
+/* Pour éviter le style de bouton par défaut sur iOS */
+.nav-tab {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin: 5px 0; /* Espace autour des boutons */
+}
+.btn:active {
+    transform: scale(0.98); /* Effet d'appui */
+}
+.btn-primary {
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+.btn-primary:hover {
+    background-color: var(--primary-accent);
+}
+.btn-secondary {
+    background-color: var(--secondary-accent);
+    color: var(--text-color);
+}
+.btn-secondary:hover {
+    background-color: #bbb; /* Gris un peu plus foncé */
+}
+.btn-add {
+    position: fixed; /* Ou absolute selon le conteneur parent */
+    bottom: calc(var(--nav-height) + 20px); /* Au dessus de la nav + padding */
+    right: 20px;
+    background-color: var(--primary-accent);
+    color: var(--background-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.8em;
+    line-height: 45px; /* Ajuster pour centrer le + */
+    padding: 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 5;
+}
+
+/* Messages d'erreur */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.9em;
+    margin-top: 10px;
+    text-align: center;
+    min-height: 1.2em; /* Pour éviter les sauts de layout */
+}
+
+/* Style des listes (exemple pour répertoire) */
+.list-item {
+    background-color: #fdfdfd;
+    border: 1px solid var(--secondary-accent);
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.3s ease;
+}
+.list-item:hover {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.item-title {
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+.item-details {
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Modales */
+.modal {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Fond semi-transparent */
+    align-items: center; /* Centre verticalement */
+    justify-content: center; /* Centre horizontalement */
+}
+.modal.active {
+    display: flex;
+    animation: fadeInModal 0.3s ease;
+}
+.modal-content {
+    background-color: var(--background-color);
+    margin: auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative; /* Pour le bouton de fermeture */
+    animation: slideInModal 0.3s ease;
+}
+
+@keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInModal { from { transform: translateY(-30px); } to { transform: translateY(0); } }
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: var(--secondary-accent);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-modal:hover,
+.close-modal:focus {
+    color: var(--primary-accent);
+    text-decoration: none;
+}
+.modal h3 {
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+/* Ajoutez d'autres styles spécifiques pour les listes, cartes, etc. */
